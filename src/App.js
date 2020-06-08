@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useRef, useState } from "react";
+import IdleTimer from "react-idle-timer";
+import "./App.css";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const idleTimerRef = useRef(null);
+	const [isUserIdle, setIsUserIdle] = useState(false);
+
+	const userIdle = (state) => {
+		setIsUserIdle(state);
+	};
+
+	return (
+		<div className="App">
+			<IdleTimer
+				ref={idleTimerRef}
+				timeout={3000}
+				onIdle={() => userIdle(true)}
+				onActive={() => userIdle(false)}
+			></IdleTimer>
+			{isUserIdle ? <h1>User is idle</h1> : <h1>User is active</h1>}
+		</div>
+	);
 }
 
 export default App;
